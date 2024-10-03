@@ -135,9 +135,9 @@ def fetch_menu_tabs(url: str, verbose=False) -> list:
         start_verbose("fetch_menu_tabs", url)
         print(colored("Started Tabs Fetching from the given link 📑", 'light_magenta'))
     
+    tabs = []
     try:
         driver.get(url)
-        tabs = []
         
         # Wait for the menu to be present on the page
         WebDriverWait(driver, 10).until(

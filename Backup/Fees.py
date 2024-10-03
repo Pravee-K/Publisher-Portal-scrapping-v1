@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 import time, json
-from .Tools.Tool import (id_to_content, driver, start_verbose, end_verbose, Spinner, Bar, sleep, fetch_menu_tabs)
+from Tools.Tool import (id_to_content, driver, start_verbose, end_verbose, Spinner, Bar, sleep, fetch_menu_tabs)
 from alive_progress import alive_bar
 from termcolor import colored
 
@@ -47,10 +47,12 @@ The `extract_fees_table` function extracts fee-related table data from a specifi
     ]
 - If no tables are found, it returns: `"No tables found"`.
 - If an error occurs during execution, the function returns: `"Error: <error_message>"`."""
-
+    print(url)
     if verbose:
         start_verbose("extract_fees_table", url)
     driver.get(url)
+    time.sleep(3)
+
     sleep(0.5, verbose, "Wait for the page to load")
     
     try:
@@ -76,22 +78,17 @@ The `extract_fees_table` function extracts fee-related table data from a specifi
     except Exception as e:
         result = f"Error: {e}"
     
-    finally:
-        driver.quit()
-
     if verbose:
         end_verbose(result)
 
     return result
-
-
 
 def run():
     with open(r'C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\ClgNames.json', 'r') as data_file:
         college_data = json.load(data_file)
 
     output_json = {}
-    tabs=[]
+
     for college_name, college_url in college_data.items():
         print(f"College Name: {college_name}, College URL: {college_url}")
         tabs = fetch_menu_tabs(college_url, True)
@@ -107,10 +104,9 @@ def run():
     driver.quit()
 
 # Example usage:
-# url = "https://www.shiksha.com/college/coimbatore-institute-of-technology-19322/fees"
-# table_data = extract_fees_table(url, verbose=True)
-# # print(table_data)
+url = "https://www.shiksha.com/college/coimbatore-institute-of-technology-19322/fees"
+table_data = extract_fees_table(url, verbose=True)
+# print(table_data)
 
 # # Don't remove this line 🙂... To Close the driver
-# driver.quit()
-# run()
+driver.quit()
