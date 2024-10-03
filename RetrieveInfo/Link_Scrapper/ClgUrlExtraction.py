@@ -50,38 +50,45 @@ def GenLink(topic_search: str) -> str:
 DicData = {}
 ErrDic = {}
 input_data = "txt"
-if input_data == "csv":
-    with open('Colleges_Dataset_last-till4000.csv', 'r') as fs:
-        data = fs.readlines()
-        for j, i in enumerate(data):
-            clean_data = i.strip().replace('"', '')
-            print(clean_data)
-            try:
-                Urls = GenLink(clean_data)
-                DicData[i.replace("\n", "")] = Urls
-                print(DicData)
-                with open('DicData_last-till4000.json', 'w') as json_file:
-                    json.dump(DicData, json_file, indent=4)
-            except:
-                print("Error occurred while generating link for", clean_data)
-                ErrDic[j] = i
-                with open('ErrDic_last-till4000.json', 'w') as json_file:
-                    json.dump(ErrDic, json_file, indent=4)
-else:
-    with open(r'C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\RetrieveInfo\Link_Scrapper\sample.txt', 'r') as fs:
-        clg_names = fs.read()
-        for j, i in enumerate(clg_names.split("\n")):
-            clean_data = i.strip().replace('"', '')
-            print(clean_data)
-            try:
-                Urls = GenLink(clean_data)
-                DicData[i.replace("\n", "")] = Urls
-                print(DicData)
-                with open('DicData_last-till4000.json', 'w') as json_file:
-                    json.dump(DicData, json_file, indent=4)
-            except Exception as e:
-                print("Error occurred while generating link for", clean_data, e)
-                ErrDic[j] = i
-                with open('ErrDic_last-till4000.json', 'w') as json_file:
-                    json.dump(ErrDic, json_file, indent=4)
-    
+file_path = []
+count = 0
+
+def run(path):
+    if input_data == "csv":
+        with open('Colleges_Dataset_last-till4000.csv', 'r') as fs:
+            data = fs.readlines()
+            for j, i in enumerate(data):
+                clean_data = i.strip().replace('"', '')
+                print(clean_data)
+                try:
+                    Urls = GenLink(clean_data)
+                    DicData[i.replace("\n", "")] = Urls
+                    print(DicData)
+                    with open('DicData_last-till4000.json', 'w') as json_file:
+                        json.dump(DicData, json_file, indent=4)
+                except:
+                    print("Error occurred while generating link for", clean_data)
+                    ErrDic[j] = i
+                    with open('ErrDic_last-till4000.json', 'w') as json_file:
+                        json.dump(ErrDic, json_file, indent=4)
+    else:
+        with open(path, 'r') as fs:
+            clg_names = fs.read()
+            for j, i in enumerate(clg_names.split("\n")):
+                clean_data = i.strip().replace('"', '')
+                print(clean_data)
+                try:
+                    Urls = GenLink(clean_data)
+                    DicData[i.replace("\n", "")] = Urls
+                    print(DicData)
+                    with open('LinkOutput'+str(count)+'.json', 'w') as json_file:
+                        json.dump(DicData, json_file, indent=4)
+                except Exception as e:
+                    print("Error occurred while generating link for", clean_data, e)
+                    ErrDic[j] = i
+                    with open('LinkErrOutput'+str(count)+'.json', 'w') as json_file:
+                        json.dump(ErrDic, json_file, indent=4)
+        
+for i in file_path:
+    run(i)
+    count=+1
