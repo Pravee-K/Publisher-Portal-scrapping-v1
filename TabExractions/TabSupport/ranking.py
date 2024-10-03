@@ -1,8 +1,8 @@
-from .Tools.Tool import ( id_to_content, driver, start_verbose, end_verbose, sleep)
+from Tools.Tool import ( fetch_menu_tabs, driver, start_verbose, end_verbose, sleep)
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-
+import json
 
 def extract_ranking_info(url, verbose):
     """
@@ -98,6 +98,28 @@ def extract_ranking_info(url, verbose):
         end_verbose(output_data)
     
     return output_data
+
+
+
+with open(r'C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\ClgNames.json', 'r') as data_file:
+    college_data = json.load(data_file)
+
+output_json = {}
+
+for college_name, college_url in college_data.items():
+    print(f"College Name: {college_name}, College URL: {college_url}")
+    tabs = fetch_menu_tabs(college_url, True)
+    if "Rankings" in tabs:
+        table_data = extract_ranking_info(college_url+"/ranking", verbose=True)
+        output_json[college_url] = table_data 
+    else:
+        output_json[college_url] = "No Rankings tab found"
+
+with open(r"C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\RankingOutput.json", 'w') as output_file:
+    json.dump(output_json, output_file, indent=4)
+
+driver.quit()
+
 
 # url = 'https://www.shiksha.com/college/iit-madras-indian-institute-of-technology-adyar-chennai-3031/ranking'
 # extract_ranking_info(url, True)

@@ -1,15 +1,15 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from .Tools.Tool import ( get_first_search_result_url, driver, start_verbose, end_verbose, sleep)
-
+from Tools.Tool import ( get_first_search_result_url, driver, fetch_menu_tabs, start_verbose, end_verbose, sleep)
+import json
 
 def extract_review_text(search_term, verbose):
     
     if verbose:
         start_verbose("extract_review_text", search_term)
     try:
-        driver.get(get_first_search_result_url(search_term))
+        driver.get(get_first_search_result_url(search_term, verbose))
         
         sleep(0.5)
         
@@ -34,6 +34,27 @@ def extract_review_text(search_term, verbose):
     except Exception as e:
         print(f"Error: {e}")
         return None
+
+
+with open(r'C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\ClgNames.json', 'r') as data_file:
+    college_data = json.load(data_file)
+
+output_json = {}
+
+for college_name, college_url in college_data.items():
+    print(f"College Name: {college_name}, College URL: {college_url}")
+    try:
+        table_data = extract_review_text(college_name, verbose=True)
+        output_json[college_url] = table_data
+    except:
+        output_json[college_url] = "No Reviews tab found"
+        
+
+with open(r"C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\ReviewsOutput.json", 'w') as output_file:
+    json.dump(output_json, output_file, indent=4)
+
+driver.quit()
+
 
 # chrome_driver_path = "chromedriver.exe"  
 # url = "https://zollege.in/college/183263-coimbatore-institute-of-technology-cit-coimbatore/reviews"

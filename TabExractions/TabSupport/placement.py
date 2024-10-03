@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
-import time
-from .Tools.Tool import (id_to_content, driver, start_verbose, end_verbose, Spinner, Bar, sleep)
+import time, json
+from Tools.Tool import (fetch_menu_tabs, driver, start_verbose, end_verbose, Spinner, Bar, sleep)
 from alive_progress import alive_bar
 from termcolor import colored
 import random
@@ -102,6 +102,27 @@ def extract_placement(url, verbose=False):
         end_verbose(result)
 
     return result
+
+
+
+with open(r'C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\ClgNames.json', 'r') as data_file:
+    college_data = json.load(data_file)
+
+output_json = {}
+
+for college_name, college_url in college_data.items():
+    print(f"College Name: {college_name}, College URL: {college_url}")
+    tabs = fetch_menu_tabs(college_url, True)
+    if "Placements" in tabs:
+        table_data = extract_placement(college_url+"/placement", verbose=True)
+        output_json[college_url] = table_data 
+    else:
+        output_json[college_url] = "No Fees tab found"
+
+with open(r"C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\PlacementsOutput.json", 'w') as output_file:
+    json.dump(output_json, output_file, indent=4)
+
+driver.quit()
 
 
 # Example usage:

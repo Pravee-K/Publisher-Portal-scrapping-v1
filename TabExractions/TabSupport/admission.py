@@ -3,7 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import time
-from Tools.Tool import (id_to_content, driver, start_verbose, end_verbose, Spinner, Bar, sleep)
+from Tools.Tool import (id_to_content, driver, start_verbose, end_verbose, Spinner, Bar, sleep, fetch_menu_tabs)
 from alive_progress import alive_bar
 from termcolor import colored
 import random
@@ -81,7 +81,11 @@ output_json = {}
 
 for college_name, college_url in college_data.items():
     print(f"College Name: {college_name}, College URL: {college_url}")
-    table_data = extract_admission_table(college_url+"/admission", verbose=True)  # change the function
+    tabs = fetch_menu_tabs(college_url, True)
+    if "Admissions" in tabs:
+        table_data = extract_admission_table(college_url+"/admission", verbose=True)  # change the function
+    else:
+        table_data = "No 'Admissions' tab found"
 
 with open(r"C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\AdmissionOutput.json", 'w') as output_file:
     json.dump(output_json, output_file, indent=4)
