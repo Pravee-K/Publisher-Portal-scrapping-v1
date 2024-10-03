@@ -100,25 +100,25 @@ def extract_ranking_info(url, verbose):
     return output_data
 
 
+def run():
+    with open(r'C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\ClgNames.json', 'r') as data_file:
+        college_data = json.load(data_file)
 
-with open(r'C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\ClgNames.json', 'r') as data_file:
-    college_data = json.load(data_file)
+    output_json = {}
 
-output_json = {}
+    for college_name, college_url in college_data.items():
+        print(f"College Name: {college_name}, College URL: {college_url}")
+        tabs = fetch_menu_tabs(college_url, True)
+        if "Rankings" in tabs:
+            table_data = extract_ranking_info(college_url+"/ranking", verbose=True)
+            output_json[college_url] = table_data 
+        else:
+            output_json[college_url] = "No Rankings tab found"
 
-for college_name, college_url in college_data.items():
-    print(f"College Name: {college_name}, College URL: {college_url}")
-    tabs = fetch_menu_tabs(college_url, True)
-    if "Rankings" in tabs:
-        table_data = extract_ranking_info(college_url+"/ranking", verbose=True)
-        output_json[college_url] = table_data 
-    else:
-        output_json[college_url] = "No Rankings tab found"
+    with open(r"C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\RankingOutput.json", 'w') as output_file:
+        json.dump(output_json, output_file, indent=4)
 
-with open(r"C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\RankingOutput.json", 'w') as output_file:
-    json.dump(output_json, output_file, indent=4)
-
-driver.quit()
+    driver.quit()
 
 
 # url = 'https://www.shiksha.com/college/iit-madras-indian-institute-of-technology-adyar-chennai-3031/ranking'

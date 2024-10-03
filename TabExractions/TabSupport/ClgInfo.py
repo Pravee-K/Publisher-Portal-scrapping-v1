@@ -168,28 +168,28 @@ def fetch_college_highlights(url, verbose):
 
 
 
+def run():
+    with open(r'C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\ClgNames.json', 'r') as data_file:
+        college_data = json.load(data_file)
 
-with open(r'C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\ClgNames.json', 'r') as data_file:
-    college_data = json.load(data_file)
+    output_json = {}
+    table_data = []
 
-output_json = {}
-table_data = []
+    for college_name, college_url in college_data.items():
+        print(f"College Name: {college_name}, College URL: {college_url}")
+        tabs = fetch_menu_tabs(college_url, True)
+        clg_details = clg_info_top_details(college_url, verbose=True)
+        highlights = fetch_college_highlights(college_url, verbose=True)
+        table_data = [clg_details, highlights]
+        output_json[college_url] = table_data 
+        
 
-for college_name, college_url in college_data.items():
-    print(f"College Name: {college_name}, College URL: {college_url}")
-    tabs = fetch_menu_tabs(college_url, True)
-    clg_details = clg_info_top_details(college_url, verbose=True)
-    highlights = fetch_college_highlights(college_url, verbose=True)
-    table_data = [clg_details, highlights]
-    output_json[college_url] = table_data 
-    
+    with open(r"C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\ClgInfoOutput.json", 'w') as output_file:
+        json.dump(output_json, output_file, indent=4)
 
-with open(r"C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\ClgInfoOutput.json", 'w') as output_file:
-    json.dump(output_json, output_file, indent=4)
+    print("Clg info Output generated :) ")
 
-print("Clg info Output generated :) ")
-
-driver.quit()
+    driver.quit()
 
 
 
