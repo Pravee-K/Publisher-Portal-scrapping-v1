@@ -3,13 +3,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import time
-
-from selenium.webdriver.common.by import By
-import time
-from .Tools.Tool import (id_to_content, driver, start_verbose, end_verbose, Spinner, Bar, sleep)
+from Tools.Tool import (id_to_content, driver, start_verbose, end_verbose, Spinner, Bar, sleep)
 from alive_progress import alive_bar
 from termcolor import colored
 import random
+import json
+
 
 def extract_admission_table(url, verbose=False):
     """
@@ -58,7 +57,7 @@ def extract_admission_table(url, verbose=False):
                     if row_data:  # Only append non-empty rows
                         extracted_data.append(row_data)
                 tables_data.append(extracted_data)
-                extracted_data = []
+                extracted_data = []  # Reset for the next table
         
         result = tables_data if tables_data else "No tables found"
     
@@ -73,11 +72,19 @@ def extract_admission_table(url, verbose=False):
     return result
 
 
-# Example usage:
-# url = 'https://www.shiksha.com/college/iim-ahmedabad-indian-institute-of-management-vastrapur-307/admission'
+# import json  # paste the code on top 
 
-# table_data = extract_admission_table(url, verbose=True)
-# print(table_data)
+with open(r'C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\ClgNames.json', 'r') as data_file:
+    college_data = json.load(data_file)
 
-# Don't remove this line 🙂... To Close the driver
-# driver.quit()
+output_json = {}
+
+for college_name, college_url in college_data.items():
+    print(f"College Name: {college_name}, College URL: {college_url}")
+    table_data = extract_admission_table(college_url+"/admission", verbose=True)  # change the function
+
+with open(r"C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\AdmissionOutput.json", 'w') as output_file:
+    json.dump(output_json, output_file, indent=4)
+
+# Close the WebDriver at the end
+driver.quit()

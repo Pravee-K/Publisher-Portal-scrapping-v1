@@ -1,8 +1,8 @@
-from .Tools.Tool import ( id_to_content, driver, start_verbose, end_verbose, sleep)
+from Tools.Tool import ( id_to_content, driver, start_verbose, end_verbose, sleep)
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-import time
+import time, json
 
 
 url = 'https://www.shiksha.com/college/adina-institute-of-science-and-technology-sagar-60309'
@@ -165,6 +165,34 @@ def fetch_college_highlights(url, verbose):
     
     return output_data
 
+
+
+
+
+# Load College Names and URLs from the provided JSON file
+with open(r'C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\ClgNames.json', 'r') as data_file:
+    college_data = json.load(data_file)
+
+# Dictionary to store extracted table data
+output_json = {}
+table_data = []
+
+# Extract data for each college
+for college_name, college_url in college_data.items():
+    print(f"College Name: {college_name}, College URL: {college_url}")
+    clg_details = clg_info_top_details(college_url, verbose=True)
+    highlights = fetch_college_highlights(college_url, verbose=True)
+    table_data = [clg_details, highlights]
+    output_json[college_url] = table_data  # Using college_name as key in the output JSON
+
+# Save the extracted data to a new JSON file
+with open(r"C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\ClgInfoOutput.json", 'w') as output_file:
+    json.dump(output_json, output_file, indent=4)
+
+print("Clg info Output generated :) ")
+
+# Close the WebDriver at the end
+driver.quit()
 
 
 

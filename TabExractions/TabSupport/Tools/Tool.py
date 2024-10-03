@@ -17,6 +17,11 @@ Bar = ['smooth', 'classic', 'classic2', 'brackets', 'blocks', 'bubbles', 'solid'
 # Set up Chrome options
 options = Options()
 # options.add_argument('--disable-http2')
+options.add_argument("--disable-blink-features=AutomationControlled")
+options.add_argument("start-maximized")
+options.add_argument("disable-infobars")
+options.add_argument("--disable-extensions")
+
 driver = webdriver.Chrome(options=options)
 
 def id_to_content(data: dict):

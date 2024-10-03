@@ -1,9 +1,8 @@
 from selenium.webdriver.common.by import By
-import time
+import time, json
 from .Tools.Tool import (id_to_content, driver, start_verbose, end_verbose, Spinner, Bar, sleep)
 from alive_progress import alive_bar
 from termcolor import colored
-import random
 
 
 def extract_fees_table(url, verbose=False):
@@ -86,6 +85,26 @@ The `extract_fees_table` function extracts fee-related table data from a specifi
 
     return result
 
+
+# Load College Names and URLs from the provided JSON file
+with open(r'C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\ClgNames.json', 'r') as data_file:
+    college_data = json.load(data_file)
+
+# Dictionary to store extracted table data
+output_json = {}
+
+# Extract data for each college
+for college_name, college_url in college_data.items():
+    print(f"College Name: {college_name}, College URL: {college_url}")
+    table_data = extract_fees_table(college_url+"/admission", verbose=True)
+    output_json[college_url] = table_data  # Using college_name as key in the output JSON
+
+# Save the extracted data to a new JSON file
+with open(r"C:\Users\Admin\Downloads\Publisher-Portal-scrapping\Publisher-Portal-scrapping-c3f406f7401c74c8741a31781b0a23a10a2fcf9f\TabExractions\TabSupport\data\AdmissionOutput.json", 'w') as output_file:
+    json.dump(output_json, output_file, indent=4)
+
+# Close the WebDriver at the end
+driver.quit()
 
 # Example usage:
 # url = "https://www.shiksha.com/college/coimbatore-institute-of-technology-19322/fees"
