@@ -4,8 +4,12 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import time, json
 
-
-
+text_files = []
+DicData = {}
+ErrDic = {}
+input_data = "txt"
+file_path = []
+full_file_path = []
 
 def GenLink(topic_search: str) -> str:
     """
@@ -47,10 +51,28 @@ def GenLink(topic_search: str) -> str:
     browser.quit()
     return href_url
 
-DicData = {}
-ErrDic = {}
-input_data = "txt"
-file_path = []
+
+
+import os
+current_file_path = os.path.abspath(__file__)
+current_directory = os.path.dirname(current_file_path)
+
+relative_path = os.path.join(current_directory, '..', '..', 'TabExractions', 'TabSupport', 'data', 'InputData')
+target_directory = os.path.abspath(relative_path)
+
+print(relative_path, target_directory)
+
+if os.path.exists(target_directory) and os.path.isdir(target_directory):
+    text_files = [f for f in os.listdir(target_directory) if f.endswith('.txt')]
+    if text_files:
+        print("List of .txt files with their full paths:")
+        for file in text_files:
+            full_file_path.append(os.path.join(target_directory, file))
+    else:
+        print("No .txt files found in the directory.")
+else:
+    print("Target directory does not exist.")
+
 count = 0
 
 def run(path):
@@ -73,7 +95,13 @@ def run(path):
                         json.dump(ErrDic, json_file, indent=4)
     else:
         with open(path, 'r') as fs:
+            directory_path = os.path.dirname(path)
+            parent_directory = os.path.abspath(os.path.join(directory_path, '..', '..'))
+            output_directory = os.path.join(parent_directory, 'Output')
+            os.makedirs(output_directory, exist_ok=True)
+            base_name = os.path.basename(path)
             clg_names = fs.read()
+            
             for j, i in enumerate(clg_names.split("\n")):
                 clean_data = i.strip().replace('"', '')
                 print(clean_data)
@@ -81,14 +109,21 @@ def run(path):
                     Urls = GenLink(clean_data)
                     DicData[i.replace("\n", "")] = Urls
                     print(DicData)
-                    with open('LinkOutput'+str(count)+'.json', 'w') as json_file:
+                    with open(os.path.join(output_directory, "Output"+base_name), 'w') as json_file:
                         json.dump(DicData, json_file, indent=4)
                 except Exception as e:
                     print("Error occurred while generating link for", clean_data, e)
                     ErrDic[j] = i
-                    with open('LinkErrOutput'+str(count)+'.json', 'w') as json_file:
+                    with open(os.path.join(output_directory, "ErrOutput"+base_name), 'w') as json_file:
                         json.dump(ErrDic, json_file, indent=4)
         
-for i in file_path:
-    run(i)
-    count=+1
+if text_files:
+    for i in full_file_path:
+        DicData = []
+        print("Running on file: ", i)
+        run(i)
+        count=+1
+else:
+    print("No .txt files found in the directory.")
+
+
