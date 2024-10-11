@@ -1,0 +1,12 @@
+{
+    "Indian Institute of Technology Kanpur\t": "https://www.shiksha.com/college/iit-kanpur-indian-institute-of-technology-25116",
+    "Indian Institute of Technology Madras\t": "https://www.shiksha.com/college/iit-kharagpur-indian-institute-of-technology-2999",
+    "Indian Institute of Technology Hyderabad\t": "https://www.shiksha.com/college/iit-hyderabad-indian-institute-of-technology-32726",
+    "Indian Institute of Technology Delhi\t": "https://www.shiksha.com/university/iit-delhi-indian-institute-of-technology-53938",
+    "Indian Institute of Technology Roorkee\t": "https://www.shiksha.com/college/iit-roorkee-indian-institute-of-technology-3057",
+    "Indian Institute of Science Bangalore\t": "https://www.shiksha.com/college/division-of-electrical-electronics-and-computer-science-eecs-indian-institute-of-science-cv-raman-road-bangalore-53420",
+    "Indian Institute of Technology Bombay\t": "https://www.shiksha.com/college/the-bombay-flying-club-vile-parle-west-mumbai-29283",
+    "Indian Institute of Information Technology, Design & Manufacturing, Kancheepuram\t": "https://www.shiksha.com/college/iiitdm-kancheepuram-indian-institute-of-information-technology-design-manufacturing-kanchipuram-chennai-38111",
+    "National Institute of Technology Calicut\t": "https://www.shiksha.com/college/nit-calicut-national-institute-of-technology-4288",
+    "Indian Institute of Technology (Banaras Hindu University) Varanasi\t": "https://www.shiksha.com/college/indian-institute-of-technology-bhu-varanasi-3011"
+}

@@ -1,0 +1,9 @@
+{
+    "6": "Centre for Environmental Planning and Technology University\t",
+    "26": "M. G. R. Educational and Research Institute\t",
+    "14": "Govt. Dental College, Nagpur\t",
+    "22": "M. G. R. Educational and Research Institute\t",
+    "23": "Government Dental College, Bangalore\t",
+    "28": "Govt. Dental College, Mumbai\t",
+    "31": "Govt. Dental College, Indore\t"
+}

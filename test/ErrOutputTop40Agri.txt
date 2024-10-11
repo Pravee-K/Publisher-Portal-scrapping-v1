@@ -1,0 +1,14 @@
+{
+    "6": "Central Institute of Fisheries Education, Fishries University\t",
+    "26": "M. G. R. Educational and Research Institute\t",
+    "14": "Govt. Dental College, Nagpur\t",
+    "22": "M. G. R. Educational and Research Institute\t",
+    "23": "Government Dental College, Bangalore\t",
+    "28": "Central Agricultural University\t",
+    "31": "Govt. Dental College, Indore\t",
+    "5": "Indian Veterinary Research Institute, Izatnagar\t",
+    "16": "Dr. Y.S. Parmar University of Horticulture and Forestry, Solan\t",
+    "21": "Orissa University of Agriculture & Technology, Bhubaneswar\t",
+    "24": "Kerala University of Fisheries & Ocean Studies\t",
+    "32": "Dr. Rajendra Prasad Central Agricultural University, Samastipur\t"
+}
